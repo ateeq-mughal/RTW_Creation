@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+
+{% block body %}
+<br><br>
+    <section style="filter: brightness(100%);">
+        <div class="lgp-hd">
+            <h2><strong>welcome to RTW PORTAL</strong></h2>
+            <h5><strong>login to PROCEED</strong></h5>
+        </div>
+        <div class="container login-cont">
+            <div class="row">
+                <div class="col-10 col-sm-6 col-md-4 col-lg-4 offset-1 offset-sm-3 offset-md-4 offset-lg-4 login-col"><i
+                        class="icon ion-lock-combination d-lg-flex justify-content-lg-center"
+                        data-bss-hover-animate="wobble"></i>
+                    <form class="login-form" method="post" action='login'>
+                    {% csrf_token %}
+                        <div class="form-group"><input class="form-control form-control-lg lg-frc" type="text" name='username'
+                                required="" placeholder="Enter User ID"></div>
+                        <div class="form-group"><input class="form-control form-control-lg lg-frc" type="password" name="password"
+                                required="" placeholder="Enter Password"></div>
+                        <div class="form-group"><button class="btn btn-light btn-lg login-btn"
+                                data-bss-hover-animate="pulse" type="submit"><strong>Login</strong></button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <script>$(document).ready((function () { $("[data-bss-hover-animate]").mouseenter((function () { var a = $(this); a.addClass("animated " + a.attr("data-bss-hover-animate")) })).mouseleave((function () { var a = $(this); a.removeClass("animated " + a.attr("data-bss-hover-animate")) })) }));</script>
+
+
+<style>
+    a:focus,
+    a:hover {
+        text-decoration: none
+    }
+
+    a,
+    a:focus,
+    a:hover {
+        outline: 0
+    }
+
+    body {
+        background: #0075b9;
+        background: radial-gradient(circle, #0075b9 0, #002c5d 100%)
+    }
+
+    .login-cont {
+        padding: 20px 100px 10px;
+        text-align: center
+    }
+
+    .form-control.input-lg.lg-frc {
+        border-radius: 0;
+        background-color: transparent;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        font-size: 14px;
+        padding: 5px 8px;
+        color: #fff
+    }
+
+    .form-control.input-lg.lg-frc:focus {
+        border-color: #565656;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .login-col {
+        padding: 15px 30px 30px;
+        background-color: rgba(0, 0, 0, .2);
+        border: 1px solid rgba(204, 204, 204, .36)
+    }
+
+    .login-btn {
+        border-radius: 0;
+        background-color: transparent;
+        background-image: none;
+        text-shadow: none;
+        color: #fff;
+        padding: 10px 40px;
+        margin-top: 25px;
+        font-size: 14px
+    }
+
+    @media (max-width:768px) {
+        .login-cont {
+            margin-top: 150px;
+            padding: 20px
+        }
+    }
+
+    .form-control:focus {
+        border-color: #25476a;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .lgp-hd {
+        color: #fff;
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 60px
+    }
+
+    .login-form {
+        border: 1px solid rgba(204, 204, 204, .36);
+        padding: 20px;
+        background-color: rgba(0, 0, 0, .32)
+    }
+
+    .icon.ion-lock-combination {
+        color: #fff;
+        font-size: 70px;
+        margin-bottom: 10px
+    }
+</style>
+{% endblock body %}
+

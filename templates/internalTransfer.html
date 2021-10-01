@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %} Form {% endblock title %}
+
+
+{% block body %}
+
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .center_aligned {
+        text-align: center;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Float four columns side by side */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 0 10px;
+    }
+
+    /* Remove extra left and right margins, due to padding in columns */
+    .row {
+        margin: 0 -5px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Style the counter cards */
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        /* this adds the "card" effect */
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+    }
+
+    /* Responsive columns - one column layout (vertical) on small screens */
+    @media screen and (max-width: 600px) {
+        .column {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+        }
+    }
+
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        font-size: 18;
+        border: none;
+        outline: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 4px;
+    }
+
+    #myBtn:hover {
+        background-color: #555;
+    }
+</style>
+
+
+
+<!-- TOP BUTTON FUNCTIONALITY -->
+<button onclick="topFunction()" id="myBtn" title="Go to top">Back to Top</button>
+
+
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <h3 style="text-align: left;">Date: {{ date }}</h3>
+        </div>
+        <div class="col-md-8">
+            <h1 style="text-align: center;">Internal Transfer Form</h1>
+        </div>
+        <div class="col-md-2">
+            <h3 style="text-align: left;">Count: </h3>
+        </div>
+    </div>
+
+    <hr><br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="text-align: center;">Select Product</h3>
+        </div>
+    </div>
+
+</div>
+
+
+<br>
+
+
+
+
+
+<div class="container-fluid">
+
+
+    {% for sku_row in unique_sku %}
+
+    <div class="row mt-5">
+        <!--Grid column-->
+        <div class="col ">
+            <!-- Card deck -->
+            <div class="card-deck ">
+
+                {% for col_card in sku_row %}
+
+
+                <!-- Card -->
+                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                    <!--Card content-->
+                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
+                        <img src="{{ col_card.3 }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
+                            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                            <a href="/internalTransfer" class="btn btn-primary">Enter Quantity</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
+
+
+
+                <!-- Card deck -->
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </div>
+    <br>
+    {% endfor %}
+    <hr>
+
+    <a>
+
+
+</div>
+
+
+
+
+
+
+
+
+<script>
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+
+
+
+{% endblock body %}

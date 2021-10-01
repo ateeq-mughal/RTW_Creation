@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .center_aligned {
+        text-align: center;
+    }
+</style>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Float four columns side by side */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 0 10px;
+    }
+
+    /* Remove extra left and right margins, due to padding in columns */
+    .row {
+        margin: 0 -5px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Style the counter cards */
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        /* this adds the "card" effect */
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+    }
+
+    /* Responsive columns - one column layout (vertical) on small screens */
+    @media screen and (max-width: 600px) {
+        .column {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<div class="center_aligned">
+    <img src="static/logo.jpg" height="100px" width="100px">
+</div>
+
+
+
+<h1> Welcome {{request.user}} to RTW Portal! </h1> <br><br><br>
+
+
+<div class="container">
+    <div class="section-heading">
+        <h2>Please Select From Below</h2>
+    </div>
+    <div class="row mt-5">
+        <!--Grid column-->
+        <div class="col ">
+            <!-- Card deck -->
+            <div class="card-deck ">
+                <!-- Card -->
+                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                    <!--Card content-->
+                    <div class="card-body flex-column ">
+                        <img src="static/internal_trasfer.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Internal Transfer</h5>
+                            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                            <a href="/internalTransfer" class="btn btn-primary">Open Form</a>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Card -->
+                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                    <!--Card content-->
+                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
+                        <img src="static/internal_trasfer.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Internal Transfer</h5>
+                            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                            <a href="/internalTransfer" class="btn btn-primary">Open Form</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                    <!--Card content-->
+                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
+                        <img src="static/internal_trasfer.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Internal Transfer</h5>
+                            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                            <a href="/internalTransfer" class="btn btn-primary">Open Form</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card -->
+            </div>
+            <!-- Card deck -->
+        </div>
+        <!--Grid column-->
+    </div>
+    <!--Grid row-->
+</div>
+
+
+
+
+{% endblock body %}
