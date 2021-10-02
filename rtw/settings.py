@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-1mtmzvs$xrupx=%fwkhf0+_%7678ua8i#jk5x6)k-#392k035p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.100.164', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.18.17:8000', '127.0.0.1', "192.168.18.17"]
 
 
 # Application definition
@@ -52,6 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'rtw.urls'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 TEMPLATES = [
     {
