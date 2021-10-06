@@ -5,8 +5,26 @@ from ordered_set import OrderedSet
 from datetime import date
 import pandas as pd
 from django.template.defaulttags import register
+import json
 
 pd.options.mode.chained_assignment = None  # default='warn'
+
+from django.template.defaultfilters import register
+
+@register.filter(name='dict_key')
+def dict_key(d, k):
+    '''Returns the given key from a dictionary.'''
+    # print("DICTINARYYYYYYYYYYYYYYYYYYY", d[k])
+    return d[k]
+
+
+
+@register.filter(name='index')
+def index(indexable, i):
+    print("INDEXABLEEEEEEEEEEE", indexable[i])
+    return indexable[i]
+
+
 # Create your views here.
 
 today = date.today()
@@ -34,10 +52,13 @@ def internalTransfer(request):
 
     if request.method == 'POST':
         print("POST MEIN AYA TOU")
+        # received_json_data=json.loads(request.POST)
+        # print(received_json_data)
+        print("SEEEE HEREEEEE", type(request.POST))
 
         print(request.POST)
 
-        return HttpResponse(request.POST)
+        return redirect('/internalTransfer')
     
     else:
         if request.user.is_anonymous:
@@ -89,7 +110,7 @@ def internalTransfer(request):
 
         class_level1_row = []
         all_unique = []
-        count = 1
+        count = 0
         # print(len(class_level1)//4)
         for i in range(1,(len(class_level1)//4)+1):
             for col in range(1,5):
@@ -104,39 +125,45 @@ def internalTransfer(request):
 
 
         # *******************************************************************************
+
+
         variant_dict = {}
-        variant_row = []
-        all_variant = []
-        for key, value in product_dict.items():
+        for key in sku_unique_set:
+            # print(key)
+            variant_row = []
+            all_variant = []
             count=0
-            variant = value.values.tolist()
+            variant = product_dict[key].values.tolist()
             # print(variant)
+            # print()
+            # break
             # print()
             for i in range(1,(len(variant)//4)+1):
                 for col in range(1,5):
                     # print(count)
-                    try:
-                        variant_row.append(variant[count])
-                    except IndexError:
-                        break
+                    # try:
+                    variant_row.append(variant[count])
+                    # except IndexError:
+                    #     break
                     count += 1
                 all_variant.append(variant_row)
+                variant_row=[]
                     # print(variant_row)
             variant_dict[key] = all_variant
             all_variant = []
 
-                
-        # variant_dict
 
         # *******************************************************************************
 
-        context_unique = {
+        context = {
             'unique_sku' : all_unique,
-            'date' : today.strftime(" %d/%m/%Y ")
-        }
+            'date' : today.strftime(" %d/%m/%Y "),
+            'sku_unique_set' : sku_unique_set,
+            'variant_dict' : variant_dict
+            }
 
-        context = {**context_unique, **variant_dict}
-            
+        # context = {**context_unique, **variant_dict}
+        # print(context['CDHB'])
 
         return render(request, 'internalTransfer.html', context)
 

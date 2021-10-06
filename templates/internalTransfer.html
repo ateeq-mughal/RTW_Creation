@@ -120,6 +120,11 @@
     .modal-footer-full-width {
         border-top: 1px solid #9ea2a2 !important;
     }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
 </style>
 
 
@@ -156,68 +161,74 @@
 <br>
 
 
-<!-- BODY OF INTERNAL TRANSFER -->
+
+    <!-- BODY OF INTERNAL TRANSFER -->
 
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
 
-    {% for sku_row in unique_sku %}
-
-    <div class="row mt-5">
-        <!--Grid column-->
-        <div class="col ">
-            <!-- Card deck -->
-            <div class="card-deck ">
-
-                {% for col_card in sku_row %}
 
 
-                <!-- Card -->
-                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
-                    <!--Card content-->
-                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
-                        <img src="{{ col_card.3 }}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
-                            <button href="/internalTransfer" class="btn btn-primary" data-toggle="modal"
-                                data-target="#VariantModalPreview" id="{{ col_card.1 }}" name="{{ col_card.1 }}">Enter Quantity</button>
+        {% for sku_row in unique_sku %}
+
+        <div class="row mt-5">
+            <!--Grid column-->
+            <div class="col ">
+                <!-- Card deck -->
+                <div class="card-deck ">
+
+                    {% for col_card in sku_row %}
+
+
+                    <!-- Card -->
+                    <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                        <!--Card content-->
+                        <div class="card-body d-flex justify-content-center align-self-center flex-column ">
+                            <img src="{{ col_card.3 }}" class="img-fluid" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
+                                <button class="btn btn-primary" data-toggle="modal"
+                                    data-target="#VariantModalPreview-{{col_card.1}}" id="{{ col_card.1 }}"
+                                    name="{{ col_card.1 }}">Enter Quantity</button>
+                            </div>
+
                         </div>
 
                     </div>
 
+
+
+
+                    {% endfor %}
+
+                    <!-- Card deck -->
                 </div>
-
-                {% endfor %}
-
-                <!-- Card deck -->
+                <!--Grid column-->
             </div>
-            <!--Grid column-->
+            <!--Grid row-->
         </div>
-        <!--Grid row-->
+        <!-- <br> -->
+        {% endfor %}
+        <hr>
+
+        <a>
+
+
     </div>
-    <br>
-    {% endfor %}
-    <hr>
-
-    <a>
-
-
-</div>
 
 
 
 
 
+    {% for unique_sku in variant_dict %}
 
 
 
 
 
-
-<div class="container my-4">
     <!-- Modal -->
-    <div class="modal fade right" id="VariantModalPreview" tabindex="-1" role="dialog"
+    <div class="modal fade right" id="VariantModalPreview-{{unique_sku}}" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
         <div class="modal-dialog-full-width modal-dialog momodel modal-fluid" role="document">
             <div class="modal-content-full-width modal-content ">
@@ -229,66 +240,65 @@
                 </div>
                 <div class="modal-body">
                     <form method="post" action='internalTransfer'>
-                        {% csrf_token %}
-                        {% for sku_row in unique_sku %}
+                    {% csrf_token %}
+                    {% for variant_row in variant_dict|dict_key:unique_sku %}
 
-                        <div class="row mt-5">
-                            <!--Grid column-->
-                            <div class="col ">
-                                <!-- Card deck -->
-                                <div class="card-deck ">
+                    <div class="row mt-5">
+                        <!--Grid column-->
+                        <div class="col ">
+                            <!-- Card deck -->
+                            <div class="card-deck ">
 
-                                    {% for col_card in sku_row %}
+                                {% for variant_col_card in variant_row %}
 
 
-                                    <!-- Card -->
-                                    <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
-                                        <!--Card content-->
-                                        <div
-                                            class="card-body d-flex justify-content-center align-self-center flex-column ">
-                                            <img src="{{ col_card.3 }}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
-                                                <input class="form-control form-control-lg lg-frc" type="number"
-                                                    name="{{ col_card.0 }} - {{ col_card.1 }}-total"
-                                                    placeholder="Enter Quantity">
-                                                <br>
-                                                <input class="form-control form-control-lg lg-frc" type="number"
-                                                    name="{{ col_card.0 }} - {{ col_card.1 }}-added"
-                                                    placeholder="Enter Added Quantity" value="0">
-                                            </div>
 
+                                <!-- Card -->
+                                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                                    <!--Card content-->
+                                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
+                                        <img src="{{ variant_col_card.3 }}" class="img-fluid" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ variant_col_card.0 }} - {{ variant_col_card.1 }}
+                                            </h5>
+                                            <input class="form-control form-control-lg lg-frc" type="number"
+                                                name="{{ variant_col_card.2 }}-total" placeholder="Enter Quantity">
+                                            <!-- <br> -->
                                         </div>
 
                                     </div>
 
-                                    {% endfor %}
-
-                                    <!-- Card deck -->
                                 </div>
-                                <!--Grid column-->
-                            </div>
-                            <!--Grid row-->
-                        </div>
-                        <br>
-                        {% endfor %}
 
-                        <div class="modal-footer-full-width  modal-footer">
-                            <button type="button" class="btn btn-danger btn-md btn-rounded"
-                                data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary btn-md btn-rounded" value="Submit">
+                                {% endfor %}
+
+                                <!-- Card deck -->
+                            </div>
+                            <!--Grid column-->
                         </div>
+                        <!--Grid row-->
+                    </div>
+                    <br>
+                    {% endfor %}
+
+                    <div class="modal-footer-full-width  modal-footer">
+                        <button type="button" class="btn btn-danger btn-md btn-rounded"
+                            data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary btn-md btn-rounded" value="Submit">
+                    </div>
+                    
+
                     </form>
                 </div>
 
             </div>
         </div>
     </div>
-</div>
 
 
 
-
+    {% endfor %}
+    
 
 
 
