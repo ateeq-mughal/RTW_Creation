@@ -1,13 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from ordered_set import OrderedSet
 from datetime import date
 import pandas as pd
+from django.template.defaulttags import register
+
 pd.options.mode.chained_assignment = None  # default='warn'
 # Create your views here.
 
 today = date.today()
+
+
+...
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 def index(request):
     
@@ -22,75 +30,115 @@ def index(request):
 # @login_required(redirect_field_name='login')
 def internalTransfer(request):
 
-    if request.user.is_anonymous:
-        print("ANONY HAI")
-        return redirect('/login') 
+    print("YAHAN AYA TOU")
 
-    df = pd.read_csv('static/products_export.csv')
-    df1 = df[['Title', 'Variant SKU', 'Image Src']]
-    df2 = df1.dropna(subset=['Title'], how='all')
-    sku_variant_list = df2["Variant SKU"].tolist()
-    sku_unique_set = set()
-    sku_list = []
-    for sku in sku_variant_list:
-        sku_list.append(sku.split('-')[0])
-        sku_unique_set.add(sku.split('-')[0])
+    if request.method == 'POST':
+        print("POST MEIN AYA TOU")
 
-    df2['Unique SKU'] = sku_list
+        print(request.POST)
 
-    img_link = df2["Image Src"].tolist()
-    for link in img_link:
-        img_link[img_link.index(link)] = link.split("?", 1)[0]+'?width=250'
+        return HttpResponse(request.POST)
+    
+    else:
+        if request.user.is_anonymous:
+            print("ANONY HAI")
+            return redirect('/login') 
 
-    df2['Image Src'] = img_link
-    df2 = df2[['Title','Unique SKU','Variant SKU','Image Src']]
+        df = pd.read_csv('static/products_export.csv')
+        df1 = df[['Title', 'Variant SKU', 'Image Src']]
+        df2 = df1.dropna(subset=['Title'], how='all')
+        sku_variant_list = df2["Variant SKU"].tolist()
+        sku_unique_set = set()
+        sku_list = []
+        for sku in sku_variant_list:
+            sku_list.append(sku.split('-')[0])
+            sku_unique_set.add(sku.split('-')[0])
 
-    product_dict = dict()
+        df2['Unique SKU'] = sku_list
 
-    for unique_sku in sku_unique_set:
-        # print(unique_sku)
-        product_dict[unique_sku] = df2.loc[df2['Unique SKU'] == unique_sku]
+        img_link = df2["Image Src"].tolist()
+        for link in img_link:
+            img_link[img_link.index(link)] = link.split("?", 1)[0]+'?width=250'
 
-    class_level1 = []
-    for key in product_dict:
-        class_level1.append(product_dict[key].iloc[0].tolist())
+        df2['Image Src'] = img_link
+        df2 = df2[['Title','Unique SKU','Variant SKU','Image Src']]
 
-    names = {}
-    for unique_sku in sku_unique_set:
-        name = list(OrderedSet(product_dict[unique_sku].iloc[0][0].split()) & OrderedSet(product_dict[unique_sku].iloc[1][0].split()))
-        names[unique_sku] = ' '.join(name).title()
-        
-    for product in class_level1:
-        product[0] = names[product[1]]
+        product_dict = dict()
 
-    # print(len(class_level1))
-    int_len_of_unique_sku = len(class_level1)//4
-    len_of_unique_sku = []
-    for i in range(int_len_of_unique_sku):
-        len_of_unique_sku.append(i)
+        for unique_sku in sku_unique_set:
+            # print(unique_sku)
+            product_dict[unique_sku] = df2.loc[df2['Unique SKU'] == unique_sku]
 
-    class_level1_row = []
-    all_unique = []
-    count = 1
-    # print(len(class_level1)//4)
-    for i in range(1,(len(class_level1)//4)+1):
-        for col in range(1,5):
-            # print(count)
-            try:
-                class_level1_row.append(class_level1[count])
-            except IndexError:
-                break
-            count += 1
-        all_unique.append(class_level1_row)
+        class_level1 = []
+        for key in product_dict:
+            class_level1.append(product_dict[key].iloc[0].tolist())
+
+        names = {}
+        for unique_sku in sku_unique_set:
+            name = list(OrderedSet(product_dict[unique_sku].iloc[0][0].split()) & OrderedSet(product_dict[unique_sku].iloc[1][0].split()))
+            names[unique_sku] = ' '.join(name).title()
+            
+        for product in class_level1:
+            product[0] = names[product[1]]
+
+        # print(len(class_level1))
+        int_len_of_unique_sku = len(class_level1)//4
+        len_of_unique_sku = []
+        for i in range(int_len_of_unique_sku):
+            len_of_unique_sku.append(i)
+
         class_level1_row = []
+        all_unique = []
+        count = 1
+        # print(len(class_level1)//4)
+        for i in range(1,(len(class_level1)//4)+1):
+            for col in range(1,5):
+                # print(count)
+                try:
+                    class_level1_row.append(class_level1[count])
+                except IndexError:
+                    break
+                count += 1
+            all_unique.append(class_level1_row)
+            class_level1_row = []
 
-    context = {
-        'unique_sku' : all_unique,
-        'date' : today.strftime(" %d/%m/%Y ")
-    }
-        
 
-    return render(request, 'internalTransfer.html', context)
+        # *******************************************************************************
+        variant_dict = {}
+        variant_row = []
+        all_variant = []
+        for key, value in product_dict.items():
+            count=0
+            variant = value.values.tolist()
+            # print(variant)
+            # print()
+            for i in range(1,(len(variant)//4)+1):
+                for col in range(1,5):
+                    # print(count)
+                    try:
+                        variant_row.append(variant[count])
+                    except IndexError:
+                        break
+                    count += 1
+                all_variant.append(variant_row)
+                    # print(variant_row)
+            variant_dict[key] = all_variant
+            all_variant = []
+
+                
+        # variant_dict
+
+        # *******************************************************************************
+
+        context_unique = {
+            'unique_sku' : all_unique,
+            'date' : today.strftime(" %d/%m/%Y ")
+        }
+
+        context = {**context_unique, **variant_dict}
+            
+
+        return render(request, 'internalTransfer.html', context)
 
 def loginUser(request):
 

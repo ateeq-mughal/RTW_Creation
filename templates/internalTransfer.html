@@ -181,7 +181,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
                             <button href="/internalTransfer" class="btn btn-primary" data-toggle="modal"
-                                data-target="#VariantModalPreview" id="{{ col_card.1 }}">Enter Quantity</button>
+                                data-target="#VariantModalPreview" id="{{ col_card.1 }}" name="{{ col_card.1 }}">Enter Quantity</button>
                         </div>
 
                     </div>
@@ -216,10 +216,6 @@
 
 
 <div class="container my-4">
-    <button id="modalActivate" type="button" class="btn btn-danger" data-toggle="modal"
-        data-target="#VariantModalPreview">
-        Launch demo modal
-    </button>
     <!-- Modal -->
     <div class="modal fade right" id="VariantModalPreview" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
@@ -232,52 +228,59 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <form method="post" action='internalTransfer'>
+                        {% csrf_token %}
+                        {% for sku_row in unique_sku %}
 
-                    {% for sku_row in unique_sku %}
+                        <div class="row mt-5">
+                            <!--Grid column-->
+                            <div class="col ">
+                                <!-- Card deck -->
+                                <div class="card-deck ">
 
-                    <div class="row mt-5">
-                        <!--Grid column-->
-                        <div class="col ">
-                            <!-- Card deck -->
-                            <div class="card-deck ">
-
-                                {% for col_card in sku_row %}
+                                    {% for col_card in sku_row %}
 
 
-                                <!-- Card -->
-                                <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
-                                    <!--Card content-->
-                                    <div class="card-body d-flex justify-content-center align-self-center flex-column ">
-                                        <img src="{{ col_card.3 }}" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
-                                            <input class="form-control form-control-lg lg-frc" type="number"
-                                                name='username' required="" placeholder="Enter Quantity">
+                                    <!-- Card -->
+                                    <div class="card shadow-lg p-3 mb-5 bg-white rounded ">
+                                        <!--Card content-->
+                                        <div
+                                            class="card-body d-flex justify-content-center align-self-center flex-column ">
+                                            <img src="{{ col_card.3 }}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ col_card.0 }} - {{ col_card.1 }}</h5>
+                                                <input class="form-control form-control-lg lg-frc" type="number"
+                                                    name="{{ col_card.0 }} - {{ col_card.1 }}-total"
+                                                    placeholder="Enter Quantity">
                                                 <br>
-                                            <input class="form-control form-control-lg lg-frc" type="number"
-                                                name='username' required="" placeholder="Enter Added Quantity"
-                                                value="0">
+                                                <input class="form-control form-control-lg lg-frc" type="number"
+                                                    name="{{ col_card.0 }} - {{ col_card.1 }}-added"
+                                                    placeholder="Enter Added Quantity" value="0">
+                                            </div>
+
                                         </div>
 
                                     </div>
 
+                                    {% endfor %}
+
+                                    <!-- Card deck -->
                                 </div>
-
-                                {% endfor %}
-
-                                <!-- Card deck -->
+                                <!--Grid column-->
                             </div>
-                            <!--Grid column-->
+                            <!--Grid row-->
                         </div>
-                        <!--Grid row-->
-                    </div>
-                    <br>
-                    {% endfor %}
+                        <br>
+                        {% endfor %}
+
+                        <div class="modal-footer-full-width  modal-footer">
+                            <button type="button" class="btn btn-danger btn-md btn-rounded"
+                                data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary btn-md btn-rounded" value="Submit">
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer-full-width  modal-footer">
-                    <button type="button" class="btn btn-danger btn-md btn-rounded" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-md btn-rounded">Save changes</button>
-                </div>
+
             </div>
         </div>
     </div>
